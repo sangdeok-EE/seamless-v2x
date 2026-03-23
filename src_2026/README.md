@@ -1,4 +1,4 @@
-# V2X Sender/Receiver (Reed-Solomon 기반 통합합메시지 전송)
+# V2X Sender/Receiver (Reed-Solomon 기반 통합 메시지 전송)
 
 ## 1. 개요
 - 본 소스는 **V2X 환경에서 영상 데이터 + 안전 메시지(BSM, SDSM 등)**를 함께 송수신하는 PyQt5 기반 GUI 프로그램입니다.
