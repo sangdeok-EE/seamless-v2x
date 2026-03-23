@@ -1,8 +1,8 @@
 # V2X Sender/Receiver (Reed-Solomon 기반 통합합메시지 전송)
 
 ## 1. 개요
-- 본 소스는 **V2X 환경에서 영상 데이터 + 긴급 메시지(BSM 유사 텍스트)**를 함께 송수신하는 PyQt5 기반 GUI 프로그램입니다.
-- 긴급 메시지는 **56바이트 고정 페이로드(K=8, Symbol=7)** 기준으로 구성되며, Reed-Solomon 방식(적응형 포함)으로 인코딩/디코딩됩니다.
+- 본 소스는 **V2X 환경에서 영상 데이터 + 안전 메시지(BSM, SDSM 등)**를 함께 송수신하는 PyQt5 기반 GUI 프로그램입니다.
+- 안전 메시지는 **56바이트 고정 페이로드(K=8, Symbol=7)** 기준으로 구성되며, Reed-Solomon 방식(적응형 포함)으로 인코딩/디코딩됩니다.
 - 송신 측은 CSV 시나리오(`scenario_v2x_56.csv`)를 순차 읽기하여 메시지와 환경 PDR을 반영하고, 수신 측은 복원된 메시지를 UI/로그에 표시합니다.
 
 ## 2. 주요 파일
@@ -11,11 +11,11 @@
   - Sender/Receiver 창 선택
 - `sender_window.py`
   - 영상 캡처(카메라/파일) + 패킷 분할 전송
-  - 긴급 메시지 RS 인코딩 및 삽입
+  - 안전 메시지 RS 인코딩 및 삽입
   - Gilbert-Elliot 채널 모델 기반 손실 시뮬레이션
 - `receiver_window.py`
   - 패킷 수신/파싱, 영상 복원
-  - 긴급 메시지 복원(RS 디코딩 포함)
+  - 안전 메시지 복원(RS 디코딩 포함)
   - PDR/Throughput/Latency/Distance 그래프, 지도/기상/도로 정보 UI
   - 헤더 로그/긴급메시지 로그 저장
 - `packet_header_struct.py`
@@ -28,7 +28,7 @@
 ## 3. 동작 구조 요약
 - 송신
   - 프레임(300x300)을 바이트로 변환 후 최대 크기 기준으로 세그먼트 전송
-  - 긴급 메시지는 CSV에서 읽어 56바이트로 패딩 후 RS 인코딩(현재 기본 모드: `ADAPTIVE_RS`)
+  - 안전 메시지는 CSV에서 읽어 56바이트로 패딩 후 RS 인코딩(현재 기본 모드: `ADAPTIVE_RS`)
   - 영상 페이로드 뒤에 `BSM:` 구분자로 메시지를 붙이거나, 8바이트 헤더 필드를 통해 조각 전송
 - 수신
   - 수신 패킷에서 SSOV/영상/메시지 구간 파싱
@@ -97,7 +97,7 @@ python select_window.py
 - 파일: `scenario_v2x_56.csv`
 - 예시 컬럼:
   - `Index`
-  - `Payload` (긴급 메시지 원문)
+  - `Payload` (안전 메시지 원문)
   - `Note`
   - `Env_PDR` (환경 PDR, 적응형 RS 파라미터 결정에 사용)
   - `Env_AoI`
